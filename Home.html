@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Home</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="style1.css" rel="stylesheet">
+
+    <style>
+        #customerT {
+            width: 100%;
+            text-align: center;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body class="bg-img">
+<div class="text-center">
+    <a href="SignIn.html" class="ml-1 font-weight-bold ">
+        <button type="button" class="btn nav-signIn">Sign In</button>
+    </a>
+</div>
+
+<form class="col-sm-auto col-md-5 md-form form-lg full-bg-img p-4 container text-capitalize z-depth-5 form-stl">
+    <div class="md-form container signUp">
+        <p class="h4 text-center mb-4 signUp-center" style="color: white">Farming Assistance</p>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-user prefix grey-text"> </i>
+        <input type="text" id="materialFormRegisterNameEx" class="form-control"> </input>
+        <label for="materialFormRegisterNameEx">Your Full name</label>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-phone prefix grey-text"> </i>
+        <input type="text" id="materialFormRegisterEmailEx" class="form-control"> </input>
+        <label for="materialFormRegisterEmailEx">Your Phone Number</label>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-lock prefix grey-text"> </i>
+        <input type="password" id="materialFormRegisterPasswordEx" class="form-control"> </input>
+        <label for="materialFormRegisterPasswordEx">Your password</label>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-exclamation-triangle prefix grey-text"> </i>
+        <input type="password" id="materialFormRegisterConfirmEx1" class="form-control"> </input>
+        <label for="materialFormRegisterConfirmEx1">Confirm Password</label>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-user prefix grey-text"> </i>
+        <input type="text" id="materialFormRegisterUserNameEx" class="form-control"> </input>
+        <label for="materialFormRegisterUserNameEx">User name</label>
+    </div>
+
+
+    <div id="customerT">
+        <input type="radio" id="r1" name="CustomerType" value="Seller" > Seller </input>
+        <input type="radio" id="r2" name="CustomerType" value="Buyer" > Buyer </input>
+    </div>
+
+
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-block btn-rounded sub" onclick="SignUpFunction()">Sign Up</button>
+    </div>
+
+    <div class="col-md-12">
+        <p class="font-small white-text d-flex justify-content-end act">Have an account?<a href="SignIn.html" class="font-weight-bold act-main">
+            Log in</a></p>
+    </div>
+</form>
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+
+
+<script>
+
+    function SignUpFunction() {
+        let userN = document.getElementById("materialFormRegisterUserNameEx").value;
+        let pass1 = document.getElementById("materialFormRegisterPasswordEx").value;
+        let pass2 = document.getElementById("materialFormRegisterConfirmEx1").value;
+        let num = document.getElementById("materialFormRegisterEmailEx").value;
+        let namef = document.getElementById("materialFormRegisterNameEx").value;
+        let tp = document.getElementsByName("CustomerType");
+        let passS = true;
+        let numS = true;
+        let namefS = true;
+        let userS = true;
+        let setS = false;
+        let set = " ";
+
+        SignUpFunction1()
+
+
+        function SignUpFunction1()
+        {
+            $.ajax
+            (
+                {
+                    url: "http://localhost:8080/users/getAllusers",
+                    type: "GET",
+                    headers:
+                        {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                    /*            data : JSON.stringify( {
+                                email:email,
+                                password: pass
+                            }),*/
+                    datatype: 'json',
+                    success: function (response) {
+
+
+                        //window.open("http://localhost:63342/FarmerAssistant/UserProfile.html", "_self");
+
+                        for (let users of response) {
+                            if (users.username === userN) {
+                                alert("username taken");
+                                userS = false;
+                            }
+                            else userS = true;
+                        }
+
+
+                        if (pass1 !== pass2) {
+                            alert("password do not match");
+                            passS = false;
+                        }
+                        else passS = true;
+                        if (pass1.length <= 0 || pass2.length <= 0) {
+                            alert("invalid password");
+                            passS = false;
+                        }
+                        else passS = true;
+
+                        if (num.length <= 8) {
+                            alert("enter valid number");
+                            numS = false
+                        }
+                        else numS = true;
+
+                        if (namef.length <= 6) {
+                            alert("enter valid name");
+                            namefS = false;
+                        }
+                        else namefS = true;
+
+                        if (tp[0].checked) {
+                            set = "Seller";
+                            setS = true;
+                        }
+                        else if (tp[1].checked) {
+                            set = "Buyer";
+                            setS = true;
+                        }
+                        else {
+                            alert("select if u are a buyer or seller");
+                        }
+
+
+                        if (passS === true && numS === true && namefS === true && userS === true)
+                        {
+                            window.open("http://localhost:63342/FarmerAssistant/Signin.html", "_self");
+                            SignUpExtend();
+                        }
+                    }
+                    , error: function (error) {
+
+                    }
+                }
+            )
+        }
+
+        function SignUpExtend() {
+            {
+                $.ajax(
+                    {
+                        url: "http://localhost:8080/users/saveuser",
+                        type: "POST",
+                        contentType: "application/json",
+                        headers:
+                            {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+
+                            },
+                        data: JSON.stringify({
+                            username: $("#materialFormRegisterUserNameEx").val(),
+                            password: $("#materialFormRegisterPasswordEx").val(),
+                            phonenumber: $("#materialFormRegisterEmailEx").val(),
+                            fullname: $("#materialFormRegisterNameEx").val(),
+                            state: set,
+                            status: "Login"
+                        }),
+                        dataType: 'json',
+                        success: function (response)
+                        {
+                            window.open("http://localhost:63342/FarmerAssistant/UserProfile.html", "_self");
+                        }
+                        , error: function (error)
+                        {
+
+                        }
+                    }
+                )
+            }
+        }
+    }
+</script>
+
+
+</html>

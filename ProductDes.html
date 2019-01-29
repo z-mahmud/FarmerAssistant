@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Product</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="style1.css" rel="stylesheet">
+</head>
+
+<body class="bg-light" onload="myFunction()">
+<nav class="navbar navbar-expand-lg navbar-dark warning-color lighten-5">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"> </span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+        <ul class="navbar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link" href="userProfile.html">Profile</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="product.html">Product List</a>
+            </li>
+        </ul>
+    </div>
+
+    <a href="SellProduct.html">
+        <button class="btn btn-outline-white" id="sellB" style="visibility: hidden"> <i class="fa shopping-cart" > </i>Sell</button>
+    </a>
+
+    <a href="Rating.html">
+        <button type="button" class="btn btn-outline-white waves-effect" id="ratingB" style="visibility: hidden">Rating</button>
+    </a>
+
+    <a href="MyProduct.html">
+        <button class="btn btn-outline-white"><i class="fa shopping-cart" > </i>Cart</button>
+    </a>
+
+    <a href="Product.html">
+        <button type="button" class="btn btn-outline-white waves-effect">Update</button>
+    </a>
+    <a href="Notification.html">
+        <button type="button" class="btn btn-outline-white waves-effect" id="noteB">Notification</button>
+    </a>
+
+    <form class="form-inline my-2 my-lg-0 ml-auto">
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="searchI">
+        <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" onclick="check()"> <i class="fa fa-search mr-1"> </i></button>
+    </form>
+
+</nav>
+
+
+<div class="row">
+    <div class="col-md-6 pt-5">
+        <img src="img/4.jpg" class="img-fluid p-4" width="100%" alt="Responsive image">
+    </div>
+
+    <div class="col-md-6 p-5">
+        <h2 class="h1"><span class="badge blue" id="nameP"> </span></h2>
+
+
+        <div style="visibility: hidden" id="radio">
+            <form>
+                <button type="button" onclick="rating1()" > Good </button>
+                <button type="button" onclick="rating2()" > Bad </button>
+            </form>
+        </div>
+
+        <div>
+            <div class="list-group mt-3">
+                <p class="list-group-item" id="nameQ">    </p>
+                <p class="list-group-item" id="nameR">    </p>
+                <p class="list-group-item" style="overflow-wrap: normal" id="nameS">    </p>
+            </div>
+        </div>
+        <br>
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-block btn-rounded sub" id="buy" onclick="BuyFunction()">Buy</button>
+        </div>
+        <div class="text-center mt-4" id="remove" style="visibility: hidden">
+            <button type="button" class="btn btn-block btn-rounded sub" onclick="removeF()" >Remove</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+<script>
+    function myFunction()
+    {
+        //let check = localStorage.getItem("login");
+
+        let d = localStorage.getItem("dataL");
+        let x = localStorage.getItem("productS");
+
+        let i = document.getElementById("buy");
+        let o = document.getElementById("radio");
+        let m = document.getElementById("remove");
+        //localStorage.removeItem("userS");
+        /*if (d === "Seller")
+        {
+            c.style.visibility = "hidden";
+            u.style.visibility = "hidden";
+            n.style.visibility = "hidden";
+            i.style.visibility = "hidden";
+        }*/
+
+
+        $.ajax
+        (
+            {
+                url: "http://localhost:8080/users/Allproducts",
+                type: "GET",
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                /*            data : JSON.stringify( {
+                                email:email,
+                                password: pass
+                            }),*/
+                datatype: 'json',
+                success: function (response)
+                {
+                    //alert(x);
+                    for (let products of response)
+                    {
+                        if(products.id === parseInt(x))
+                        {
+                            document.getElementById("nameP").innerHTML = products.productname;
+                            document.getElementById("nameQ").innerHTML = products.producttype;
+                            document.getElementById("nameR").innerHTML = products.productprice;
+                            document.getElementById("nameS").innerHTML = products.productdetail;
+                            if (products.productbuyer!==0)
+                            {
+                                m.style.visibility = "visible";
+                            }
+                            if (products.productbuyer !== 0)
+                            {
+                                i.style.visibility = "hidden";
+                            }
+                            if (products.productbuyer!==0 && products.rating === null)
+                            {
+                                o.style.visibility = "visible";
+                            }
+                            break;
+                        }
+                    }
+
+                }
+                ,error: function (error)
+                {
+
+                }
+            }
+        )
+
+    }
+
+
+    function BuyFunction()
+    {
+        let L = localStorage.getItem("login");
+        let x = localStorage.getItem("productS");
+        //alert(L);
+        //alert(x);
+
+        $.ajax
+        (
+            {
+                //ami asi apni koren
+                url: "http://localhost:8080/users/UpdateProduct",
+                type: "POST",
+                contentType: "application/json",
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                data : JSON.stringify( {
+                    productid : x,
+                    userid : L
+                }),
+                datatype: 'json',
+                success: function (response)
+                {
+                    window.open("http://localhost:63342/FarmerAssistant/ProductDes.html", "_self");
+                }
+                ,error: function (error)
+                {
+
+                }
+            }
+        )
+    }
+
+    function removeF()
+    {
+        let x = localStorage.getItem("productS");
+        //alert(x);
+
+        $.ajax
+        (
+            {
+                //ami asi apni koren
+                url: "http://localhost:8080/users/removeProduct",
+                type: "POST",
+                contentType: "application/json",
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                data : JSON.stringify( {
+                    prodid : x
+                }),
+                datatype: 'json',
+                success: function (response)
+                {
+                    window.open("http://localhost:63342/FarmerAssistant/ProductDes.html", "_self");
+                }
+                ,error: function (error)
+                {
+
+                }
+            }
+        )
+    }
+
+    function rating1()
+    {
+        //let L = localStorage.getItem("login");
+        let x = localStorage.getItem("productS");
+
+        $.ajax
+        (
+            {
+                url: "http://localhost:8080/users/rateProduct",
+                type: "POST",
+                contentType: "application/json",
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                data : JSON.stringify( {
+                    proid : x,
+                    ratings : "Good"
+                }),
+                datatype: 'json',
+                success: function (response)
+                {
+                    window.open("http://localhost:63342/FarmerAssistant/ProductDes.html", "_self");
+                }
+                ,error: function (error)
+                {
+
+                }
+            }
+        )
+    }
+
+    function rating2()
+    {
+        //let L = localStorage.getItem("login");
+        let x = localStorage.getItem("productS");
+
+        $.ajax
+        (
+            {
+                url: "http://localhost:8080/users/rateProduct",
+                type: "POST",
+                contentType: "application/json",
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                data : JSON.stringify( {
+                    proid : x,
+                    ratings : "Bad"
+                }),
+                datatype: 'json',
+                success: function (response)
+                {
+                    window.open("http://localhost:63342/FarmerAssistant/ProductDes.html", "_self");
+                }
+                ,error: function (error)
+                {
+
+                }
+            }
+        )
+    }
+</script>
+
+</html>

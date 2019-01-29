@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Sign In</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="style1.css" rel="stylesheet">
+</head>
+
+<body class="bg-img">
+    <div class="text-center">
+        <a href="Home.html" class="ml-1 font-weight-bold ">
+            <button type="button" class="btn nav-signIn">Sign Up</button>
+        </a>
+    </div>
+
+    <form class="col-sm-auto col-md-5 md-form form-lg full-bg-img p-4 container text-capitalize z-depth-5 form-stl">
+        <div class="md-form container signUp">
+            <p class="h4 text-center mb-4 signUp-center">Farmar's Assistance</p>
+        </div>
+
+        <div class="md-form">
+            <i class="fa fa-envelope prefix grey-text"> </i>
+            <input type="text" id="materialFormRegisterEmailEx" class="form-control">
+            <label for="materialFormRegisterEmailEx">Your User Name</label>
+        </div>
+
+        <div class="md-form">
+            <i class="fa fa-lock prefix grey-text"> </i>
+            <input type="password" id="materialFormRegisterPasswordEx" class="form-control">
+            <label for="materialFormRegisterPasswordEx">Your password</label>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-block btn-rounded sub" onclick="SignInFunction()">Sign in</button>
+        </div>
+
+        <div class="col-md-12">
+            <p class="font-small white-text d-flex justify-content-end act">Don't have an account? <a href="Home.html" class="font-weight-bold act-main">Sign Up</a></p>
+        </div>
+    </form>
+
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+
+<script>
+    function SignInFunction()
+    {
+        $.ajax
+        (
+            {
+                url: "http://localhost:8080/users/getAllusers",
+                type: "GET",
+                headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                      /*      data : JSON.stringify( {
+                            email:email,
+                            password: pass
+                        }),*/
+                datatype: 'json',
+                success: function (response)
+                {
+                    let userIN = document.getElementById("materialFormRegisterEmailEx").value;
+                    let passwordIN = document.getElementById("materialFormRegisterPasswordEx").value;
+                    let login = false;
+
+                    for (let users of response)
+                    {
+                        if (users.username === userIN && users.password === passwordIN)
+                        {
+                            localStorage.setItem("login", users.id);
+                            if (users.state === "Buyer") {
+                                localStorage.setItem("dataL", "Buyer");
+                            }
+                            else if (users.state === "Seller") {
+                                localStorage.setItem("dataL", "Seller");
+                            }
+                            window.open("http://localhost:63342/FarmerAssistant/UserProfile.html", "_self");
+                            login = true
+                        }
+                    }
+                    if (login === false)
+                    {
+                        alert("didnt login")
+                    }
+                }
+
+                , error: function (error)
+                {
+
+                }
+            }
+        )
+    }
+</script>
+
+</html>

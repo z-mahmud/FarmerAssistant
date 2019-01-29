@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Products</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="style1.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-light" onload="myFunction()">
+    <nav class="navbar navbar-expand-lg navbar-dark warning-color lighten-5">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+            <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="userProfile.html">Profile</a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="product.html">Product List</a>
+                </li>
+            </ul>
+        </div>
+
+        <a>
+            <button class="btn btn-outline-white" onclick="myFunction1()"><i class="fa shopping-cart" > </i>Seller</button>
+        </a>
+        <a>
+            <button class="btn btn-outline-white" onclick="myFunction2()" id="custB"><i class="fa shopping-cart" > </i>Customer</button>
+        </a>
+        <a href="MyCart.html">
+        <button class="btn btn-outline-white" id="cartB"><i class="fa shopping-cart" > </i>Cart</button>
+        </a>
+        <a href="product.html">
+        <button type="button" class="btn btn-outline-white waves-effect" id="updateB">Update</button>
+        </a>
+
+        <form class="form-inline my-2 my-lg-0 ml-auto">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="searchI">
+            <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" onclick="check()"> <i class="fa fa-search mr-1"> </i></button>
+        </form>
+
+    </nav>
+
+
+
+    <div id="divappend" class="row"> </div>
+
+
+
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+
+</body>
+
+
+<script>
+    function myFunction()
+    {
+        let myDiv = document.getElementById("thumb");
+        let y = document.getElementById("updateB");
+        let z = document.getElementById("cartB");
+        let c = document.getElementById("custB");
+        let d = localStorage.getItem("dataL");
+        if (d === "Seller")
+        {
+            y.style.visibility = "hidden";
+            //z.style.visibility = "hidden";
+            c.style.visibility = "hidden";
+        }
+        /*else if(d === "Buyer")
+        {
+            f
+        }*/
+    $.ajax
+    (
+        {
+            url: "http://localhost:8080/users/Allproducts",
+            type: "GET",
+            headers:
+                {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            /*            data : JSON.stringify( {
+                            email:email,
+                            password: pass
+                        }),*/
+            datatype: 'json',
+            success: function (response)
+            {
+                for (let products of response)
+                {
+                    if (products.productbuyer === 0)
+                    {
+                        let mydiv = '<div  class="img-fluid col-md-3  clickClass" id="'+products.id +'">\n' +
+                            '<a class="float-left" style="width:250px;height:250px;padding:40px"><img src="img/3.jpg" alt="..." class="img-thumbnail">\n' +
+                            '<button type="button" class="btn btn-success waves-light view" id="useM2"> '+products.productname+' </button>\n' +
+                            '\n' +
+                            '</a>\n' +
+                            '</div>\n';
+                        /*  document.body.appendChild(mydiv);*/
+
+                        $("#divappend").append(mydiv)
+                    }
+                }
+                $(".clickClass").click(function ()
+                {
+                    //alert(this.id);
+                    localStorage.setItem("productS",this.id);
+                    if (d === "Buyer")
+                    {
+                        window.open("http://localhost:63342/FarmerAssistant/ProductDes.html", "_self");
+                    }
+                    else if (d === "Seller")
+                    {
+                        window.open("http://localhost:63342/FarmerAssistant/ProductDesExtend.html", "_self");
+                    }
+                })
+            }
+            ,error: function (error)
+            {
+
+            }
+        }
+        )
+    }
+
+
+    function myFunction1()
+    {
+        localStorage.setItem("userT", "Seller");
+        window.open("http://localhost:63342/FarmerAssistant/User.html" , "_self");
+    }
+
+    function myFunction2()
+    {
+        localStorage.setItem("userT", "Buyer");
+        window.open("http://localhost:63342/FarmerAssistant/User.html" , "_self");
+    }
+
+</script>
+
+
+</html>

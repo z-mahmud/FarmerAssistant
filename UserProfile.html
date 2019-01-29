@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>My Profile</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="style1.css" rel="stylesheet">
+
+    <style>
+        #button
+        {
+            width: 26%;
+            text-align: center;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+    
+<body class="bg-light"  onload="myFunction()">
+    <nav class="navbar navbar-expand-lg navbar-dark warning-color lighten-5">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"> </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+            <ul class="navbar-nav">
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="product.html">Product List</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="Home.html" class="nav-link" onclick="myFunction2()" >Sign Out</a>
+                </li>
+            </ul>
+        </div>
+
+        <a href="SellProduct.html">
+            <button class="btn btn-outline-white" id="sellB"><i class="fa shopping-cart" > </i>Sell</button>
+        </a>
+        <a href="Rating.html">
+            <button type="button" class="btn btn-outline-white waves-effect" id="ratingB">Rating</button>
+        </a>
+        <a href="MyCart.html">
+        <button class="btn btn-outline-white" id="cartB"><i class="fa shopping-cart"> </i>Cart</button>
+        </a>
+        <a href="product.html">
+        <button type="button" class="btn btn-outline-white waves-effect" id="updateB">Update</button>
+        </a>
+        <a href="Notification.html">
+            <button type="button" class="btn btn-outline-white waves-effect" id="noteB">Notification</button>
+        </a>
+
+        <form class="form-inline my-2 my-lg-0 ml-auto">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit"><i class="fa fa-search mr-1"> </i></button>
+        </form>
+
+    </nav>
+    <div id="test1"> </div>
+
+    <div class="row">
+            <div class="col">
+               <h2 class="p-1 name" id="userN "> </h2>
+                 <div>
+                    <div class="list-group mt-3 p-5">
+
+                       <p> User Name :  <p class="list-group-item" id="userN">  </p> </p>
+                       <p> Full Name :  <p class="list-group-item" id="nameF">  </p> </p>
+                       <p> State : <p class="list-group-item" id="statusU">  </p> </p>
+                       <div id="myDIV" style="visibility: visible">
+                       <p> Contact : <p class="list-group-item" id="phoneN"> </p> </p>
+
+                     </div>
+                 </div>
+               </div>
+                  <div id="button" style="width: 35%">
+                      <button type="button" class="btn btn-outline-white waves-effect" style="visibility: hidden" id="contact" onclick="myFunction1()">Contact</button>
+                  </div>
+            </div>
+
+        <div class="col">
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="avatar white">
+                <img src="img/2.jpg" class="img-fluid cir-img" alt="Responsive image">
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/mdb.min.js"></script>
+
+    <script>
+        function myFunction()
+        {
+            let check = localStorage.getItem("login");
+            let y = document.getElementById("contact");
+            let s = document.getElementById("sellB");
+            let r = document.getElementById("ratingB");
+            let c = document.getElementById("cartB");
+            let u = document.getElementById("updateB");
+            let n = document.getElementById("noteB");
+            let d = localStorage.getItem("dataL");
+            let drone = localStorage.getItem("userS");
+            localStorage.removeItem("userS");
+            if (d === "Seller")
+            {
+                c.style.visibility = "hidden";
+                u.style.visibility = "hidden";
+                n.style.visibility = "hidden";
+            }
+            else if(d === "Buyer")
+            {
+                s.style.visibility = "hidden";
+                r.style.visibility = "hidden";
+            }
+
+
+
+
+            $.ajax
+            (
+                {
+                    url: "http://localhost:8080/users/getAllusers",
+                    type: "GET",
+                    headers:
+                        {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+
+                    datatype: 'json',
+                    success: function (response)
+                    {
+
+                        console.log(response);
+                        if (check !== null)
+                        {
+                            for (let users of response)
+                            {
+                                if(users.id === parseInt(check))
+                                {
+                                   console.log(users)
+
+                                    document.getElementById("nameF").innerHTML = users.fullname;
+                                    document.getElementById("statusU").innerHTML = users.state;
+                                    document.getElementById("phoneN").innerHTML = users.phonenumber;
+                                    document.getElementById("userN").innerHTML = users.username;
+                                    document.getElementById("contact").style.visibility = hidden;
+                                    y.style.visibility = "hidden";
+                                    x.style.visibility = "visible";
+
+                                    //alert(products.productname);
+                                    //alert(products.productname);
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    ,error: function (error)
+                    {
+
+                    }
+                }
+            )
+        }
+
+        function myFunction1()
+        {
+            let x = document.getElementById("myDIV");
+            if (x.style.visibility === "hidden")
+            {
+                x.style.visibility = "visible";
+            }
+            else
+            {
+                x.style.visibility = "hidden";
+            }
+        }
+        function myFunction2()
+        {
+            localStorage.removeItem("login")
+        }
+    </script>
+
+</html>

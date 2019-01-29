@@ -1,0 +1,103 @@
+.bg-img{
+    background: url(img/1.jpg) no-repeat center fixed; 
+    background-size: cover;
+}
+.nav-signIn {
+    float: right;
+    color: #2b422c;
+    top: 10px;
+    margin-right: 15px;
+}
+.nav-signIn:hover{
+    padding:20px 40px;
+    color:blue;
+}
+.form-stl{
+    margin-top: 90px;
+     background: #c1c1c1!important;
+}
+.signUp {
+    width: 300px;
+    border: 1px solid white;
+    height: 80px;
+    background: #ea0c0c;
+    border-radius: 40px;
+    margin-top: -65px;
+}
+.lock-center {
+    margin-left: 63px;
+    margin-top: 15px;
+}
+.signUp-center{
+    margin-top: 23px;
+}
+.sub {
+    border-radius: 28px;
+    font-size: 20px;
+    background-color: #0a690a;
+}
+.sub:hover{
+    color: red;
+}
+.act {
+    padding: 20px;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+.act-main{
+    margin-left: 10px;
+}
+.act-main:hover{
+    color: blue;
+}
+.cir-img {
+    width: 100%;
+    height: 360px;
+}
+.product-img{
+    float: left;
+}
+.view {
+    margin-top: 190px;
+    margin-left: -175px;
+    font-size: 15px;
+    padding: 10px 15px;
+}
+.name{
+    color:gray;
+    margin-left: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Rating</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="style1.css" rel="stylesheet">
+</head>
+
+<body class="bg-light" onload="myFunction()">
+<nav class="navbar navbar-expand-lg navbar-dark warning-color lighten-5">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+        <ul class="navbar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link" href="userProfile.html">Profile</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="product.html">Product List</a>
+            </li>
+        </ul>
+    </div>
+
+
+</nav>
+
+<div class="row" >
+    <div class="col-md-12 p-5
+        <br>
+        <div>
+            <ul class="list-group mt-3">
+    <br>
+
+
+
+
+    <div id="divappend" class="row"> </div>
+
+
+
+
+</div>
+</div>
+
+
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/mdb.min.js"></script>
+</body>
+<script>
+    function myFunction() {
+        let x = localStorage.getItem("login");
+        let y = localStorage.getItem("dataL");
+        if (y === "Seller")
+        {
+            $.ajax
+            (
+                {
+                    url: "http://localhost:8080/users/Allproducts",
+                    type: "GET",
+                    headers:
+                        {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                    /*            data : JSON.stringify( {
+                                email:email,
+                                password: pass
+                            }),*/
+                    datatype: 'json',
+                    success: function (response)
+                    {
+                        for (let products of response)
+                        {
+                            if (products.productseller === parseInt(x) && products.rating !== null)
+                            {
+                                let mydiv = '<div  class="img-fluid col-md-3  clickClass" id="' + products.id + '">\n' +
+                                    '<a class="float-top" style="width:250px;height:250px;padding:50px"> <img src="img/3.jpg" alt="..." class="img-thumbnail">\n' +
+                                    '<button type="button" class="btn btn-success waves-light view" id="useM2"> ' + products.productname + ' </button>\n' +
+                                    '<button type="button" class="btn btn-success waves-light view" id="useM2"> ' + products.rating + ' </button>\n' +
+                                    '\n' +
+                                    '</a>\n' +
+                                    '</div>\n';
+                                /*  document.body.appendChild(mydiv);*/
+
+                                $("#divappend").append(mydiv)
+                            }
+                        }
+                        /*$(".clickClass").click(function () {
+                            //alert(this.id);
+                            localStorage.setItem("productS", this.id);
+                            window.open("http://localhost:63342/FarmerAssistant/ProductDescription.html", "_self");
+                        })*/
+                    }
+                    , error: function (error) {
+
+                    }
+                }
+            )
+        }
+    }
+</script>
+
+</html>
